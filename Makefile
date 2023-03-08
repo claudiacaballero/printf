@@ -6,7 +6,7 @@
 #    By: ccaballe <ccaballe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 15:30:00 by ccaballe          #+#    #+#              #
-#    Updated: 2022/10/19 15:30:01 by ccaballe         ###   ########.fr        #
+#    Updated: 2023/03/08 15:57:43 by ccaballe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,26 +16,37 @@ SRCS = ft_printf.c \
 	ft_putchars.c \
 	ft_putnbrs.c \
 
-OBJS = ${SRCS:.c=.o}
+OBJS = $(SRCS:.c=.o)
 RM = rm -f
-DEPS = ${SRCS:.c=.d}
+DEPS = $(SRCS:.c=.d)
+
+GREEN = \033[1;92m
+RED = \033[1;91m
+NC = \033[0m
 
 %.o: %.c Makefile
-	${CC} ${CFLAGS} -I./ -c $< -o $@
+	$(CC) $(CFLAGS) -I./ -c $< -o $@
 
-all: ${NAME}
+all: $(NAME)
 
-${NAME}: ${OBJS}
-	ar crs ${NAME} ${OBJS}
+$(NAME):: $(OBJS)
+	ar crs $(NAME) $(OBJS)
+	@echo "$(GREEN)ft_printf compiled$(NC)"
 
--include ${DEPS}
+$(NAME)::
+	@echo -n
+
 
 clean:
-	${RM} ${OBJS} ${DEPS}
+	$(RM) $(OBJS) $(DEPS)
+	@echo "$(RED)ft_printf objects deleted$(NC)"
 
 fclean: clean
-	${RM} ${NAME}
+	$(RM) $(NAME)
+	@echo "$(RED)ft_printf exec deleted$(NC)"
 
 re: fclean all
 
 .PHONY: all clean fclean re
+
+-include $(DEPS)
